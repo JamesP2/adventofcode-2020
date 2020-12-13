@@ -9,9 +9,12 @@ parser.add_argument('--verbose', '-v', action='store_true',
 args = parser.parse_args()
 
 
-def vprint(x):
+def vprint(*x):
     if args.verbose:
-        print(x)
+        if len(x) == 1:
+            print(x[0])
+        else:
+            print(x)
 
 
 passports = []
