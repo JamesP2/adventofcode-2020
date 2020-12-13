@@ -53,6 +53,9 @@ for passport in passports:
             passport_valid = False
             break
 
+    for key, value in passport.items():
+        vprint(key, value)
+
     valid_passports += 1 if passport_valid else 0
 
 vprint('Total number of valid passports:')
