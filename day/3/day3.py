@@ -7,6 +7,8 @@ parser.add_argument('--x', metavar='X_STEPS', type=int, default=3,
                     help='Number of steps to take in the X direction each iteration (default 3)')
 parser.add_argument('--y', metavar='Y_STEPS', type=int, default=1,
                     help='Number of steps to take in the Y direction each iteration (default 1)')
+parser.add_argument('--verbose', '-v', action='store_true',
+                    default=False, help='Verbose output')
 
 args = parser.parse_args()
 
@@ -34,7 +36,10 @@ while y < len(map) - 1:
     if tree:
         trees += 1
 
-for (index, line) in enumerate(map):
-    print(index, line)
+if args.verbose:
+    for (index, line) in enumerate(map):
+        print(index, line)
 
-print('Encountered {} trees'.format(trees))
+    print('Encountered {} trees'.format(trees))
+else:
+    print(trees)
