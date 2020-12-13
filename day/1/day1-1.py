@@ -10,3 +10,4 @@ for first in numbers:
             product = first * second
             print(
                 '{} + {} = 2020. The product of these numbers is {}'.format(first, second, product))
+            exit(0)
