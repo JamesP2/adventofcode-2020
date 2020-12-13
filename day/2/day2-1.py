@@ -1,8 +1,9 @@
+import sys
 import re
 
 valid_passwords = 0
 
-with open('input') as file:
+with open(sys.argv[1]) as file:
     for line in file:
         # Almost did line[:-2] but then the last line would be too short
         line = line.replace('\n', '')

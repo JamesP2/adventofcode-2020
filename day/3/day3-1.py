@@ -1,6 +1,8 @@
+import sys
+
 map = []
 
-with open('input') as file:
+with open(sys.argv[1]) as file:
     for line in file:
         map.append(list(line.replace('\n', '')))
 
