@@ -7,7 +7,8 @@ with open('input') as file:
 x, y = 0, 0
 trees = 0
 
-map[y][x] = 'X' if map[y][x] == '#' else 'O'
+tree = True if map[y][x] == '#' else False
+map[y][x] = 'X' if tree else 'O'
 while y < len(map) - 1:
     x += 3
     y += 1
