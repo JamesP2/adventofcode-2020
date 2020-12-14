@@ -33,7 +33,7 @@ def run_current_instruction():
 
     current_instruction = program[current_index]
     vprint(
-        "Acc {}, Current Instruction: {}".format(accumulator_value, current_instruction)
+        "Index {}, Acc {}, Current Instruction: {}".format(current_index, accumulator_value, current_instruction)
     )
 
     # If this instruction has been ran before then return
