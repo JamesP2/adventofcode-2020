@@ -20,4 +20,4 @@ def vprint(*x):
 with open(args.file) as file:
     for line in file:
         line = line.replace("\n", "")
-        vprint("line")
+        vprint(line)
