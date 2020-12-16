@@ -1,5 +1,4 @@
 import argparse
-import re
 
 parser = argparse.ArgumentParser(description="Seating System")
 parser.add_argument("file", metavar="INPUT_FILE", type=str, help="Input filename")
