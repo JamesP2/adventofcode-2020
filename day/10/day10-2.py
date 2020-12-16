@@ -36,6 +36,8 @@ with open(args.file) as file:
 device_adaptor_rating = highest_adaptor_rating + 3
 all_adaptors.append(device_adaptor_rating)
 
+all_adaptors.sort()
+
 possible_sets = 0
 
 # Get the next adaptor to join the current adaptor order
@@ -47,7 +49,6 @@ def get_next_adaptors(current_index, current_adaptor_order, remaining_adaptors):
     vprint("Current Index {}, Order {}".format(current_index, current_adaptor_order))
 
     for index, adaptor in enumerate(remaining_adaptors):
-
         # If the adaptor is valid then it is an option
         if (
             adaptor > current_adaptor_order[-1]
@@ -64,10 +65,12 @@ def get_next_adaptors(current_index, current_adaptor_order, remaining_adaptors):
                 vprint("Finished Set: {}".format(current_adaptor_order + [adaptor]))
                 return
 
+            new_current_adaptor_order = current_adaptor_order[:] + [adaptor]
+
             # Otherwise recurse!
             get_next_adaptors(
                 current_index + 1,
-                current_adaptor_order + [adaptor],
+                new_current_adaptor_order,
                 new_remaining_adaptors,
             )
 
