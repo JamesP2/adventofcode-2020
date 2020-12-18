@@ -26,10 +26,13 @@ class Direction(IntEnum):
     NORTH = 270
 
 
-def rotate_waypoint(angle):
-    global ship_position, waypoint_relative_position
-
+def rotate_waypoint(old_position, angle):
     angle = math.radians(angle)
+
+    return [
+        round(math.cos(angle) * old_position[0] - math.sin(angle) * old_position[1]),
+        round(math.sin(angle) * old_position[0] + math.cos(angle) * old_position[1]),
+    ]
 
 
 ship_direction = 0
@@ -52,15 +55,20 @@ with open(args.file) as file:
         elif action == "W":
             waypoint_relative_position[0] -= value
         elif action == "L":
-            ship_direction = (ship_direction - value) % 360
+            waypoint_relative_position = rotate_waypoint(
+                waypoint_relative_position, value
+            )
         elif action == "R":
-            ship_direction = (ship_direction + value) % 360
+            waypoint_relative_position = rotate_waypoint(
+                waypoint_relative_position, -value
+            )
         elif action == "F":
-            pass
+            ship_position[0] += waypoint_relative_position[0] * value
+            ship_position[1] += waypoint_relative_position[1] * value
 
         vprint(
-            "Instruction {}{}. Now at Lon {} Lat {} Direction {}".format(
-                action, value, ship_position[0], ship_position[1], ship_direction
+            "Instruction: {}{}, Ship Postion: {}, Waypoint Position: {}".format(
+                action, value, ship_position, waypoint_relative_position
             )
         )
 
