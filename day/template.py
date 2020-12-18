@@ -16,7 +16,8 @@ def vprint(*x):
         else:
             print(x)
 
-with open(args.file) as file:
-    for line in file:
-        line = line.replace("\n", "")
-        vprint(line)
+
+lines = [line.rstrip("\n") for line in open(args.file)]
+
+for line in lines:
+    vprint(line)
