@@ -33,48 +33,70 @@ with open(args.file) as file:
 # Our device adaptor always has a rating of 3 jolts more than the highest rated
 # adaptor we have in our crazy bag of adaptors
 device_adaptor_rating = highest_adaptor_rating + 3
-all_adaptors.append(device_adaptor_rating)
+# all_adaptors.append(device_adaptor_rating)
 
-all_adaptors.sort()
+all_adaptors.sort(reverse=True)
 
 possible_sets = 0
 
-# Get the next adaptor to join the current adaptor order
-# This is recursive so all combinations will be tried until the device adaptor
-# is reached, where the function will increment the number of possible tests and return
-def get_next_adaptors(current_index, current_adaptor_order, remaining_adaptors):
-    global device_adaptor_rating, possible_sets
 
-    vprint("Current Index {}, Order {}".format(current_index, current_adaptor_order))
+class Adaptor:
+    value = 0
+    parent = None
+    child = None
+    solutions = 0
 
-    for index, adaptor in enumerate(remaining_adaptors):
-        # If the adaptor is valid then it is an option
-        if (
-            adaptor > current_adaptor_order[-1]
-            and adaptor - current_adaptor_order[-1] <= 3
-        ):
-            # This will force a new copy of the list to be made in memory
-            new_remaining_adaptors = (
-                remaining_adaptors[0:index] + remaining_adaptors[index + 1 :]
-            )
+    def __init__(self, value, parent):
+        self.value = value
+        self.parent = parent
 
-            # If we've reached the device adaptor rating we've completed the set
-            if adaptor == device_adaptor_rating:
-                possible_sets += 1
-                vprint("Finished Set: {}".format(current_adaptor_order + [adaptor]))
-                return
+    def __repr__(self):
+        return "Adaptor {}, {}".format(self.value, self.solutions)
 
-            new_current_adaptor_order = current_adaptor_order[:] + [adaptor]
+    def get_list(self):
+        if self.child != None:
+            return str(self) + " " + self.child.get_list()
+        else:
+            return str(self)
 
-            # Otherwise recurse!
-            get_next_adaptors(
-                current_index + 1,
-                new_current_adaptor_order,
-                new_remaining_adaptors,
-            )
+    def get_number_of_solutions(self):
+        vprint(self)
+        if self.parent == None:
+            self.solutions = 1
+
+        current = self.parent
+
+        while current != None:
+            vprint(current)
+            if current.value - self.value <= 3:
+                vprint('Valid')
+                self.solutions += current.solutions
+                vprint(self)
+                current = current.parent
+            else:
+                break
+        
+        vprint(" ")
+        vprint(self)
+        return (
+            self.solutions
+            if self.child == None
+            else self.solutions + self.child.get_number_of_solutions()
+        )
 
 
-get_next_adaptors(0, [0], all_adaptors)
+end_adaptor = Adaptor(all_adaptors[0], None)
+current_adaptor = end_adaptor
+
+for index in range(1, len(all_adaptors)):
+    new_adaptor = Adaptor(all_adaptors[index], current_adaptor)
+    current_adaptor.child = new_adaptor
+    current_adaptor = new_adaptor
+
+
+print(end_adaptor.get_number_of_solutions())
+
+print(end_adaptor.get_list())
 
 vprint("Number of possible sets:")
 print(possible_sets)
